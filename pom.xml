@@ -7,9 +7,13 @@
 
     <groupId>com.mediarithmics</groupId>
     <artifactId>liquibase-clickhouse</artifactId>
-    <name>Liquibase extension for ClickHouse</name>
     <version>0.5.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <inceptionYear>2020</inceptionYear>
+
+    <name>Liquibase extension for ClickHouse</name>
+    <description>A Liquibase extension for the ClickHouse database.</description>
+    <url>https://github.com/mediarithmics/liquibase-clickhouse</url>
 
     <organization>
         <name>Mediarithmics</name>
