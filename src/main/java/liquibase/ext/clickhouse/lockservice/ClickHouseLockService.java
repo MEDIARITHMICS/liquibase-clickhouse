@@ -54,8 +54,8 @@ public class ClickHouseLockService extends StandardLockService {
             String.format(
                 "SELECT COUNT(*) FROM %s.%s",
                 database.getDefaultSchemaName(), database.getDatabaseChangeLogLockTableName());
-        int nbUpdates = getExecutor().queryForInt(new RawSqlStatement(query));
-        isLockTableInitialized = nbUpdates > 0;
+        int nbRows = getExecutor().queryForInt(new RawSqlStatement(query));
+        isLockTableInitialized = nbRows > 0;
       } catch (LiquibaseException e) {
         if (getExecutor().updatesDatabase()) {
           throw new UnexpectedLiquibaseException(e);

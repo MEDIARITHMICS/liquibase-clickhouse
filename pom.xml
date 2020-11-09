@@ -23,6 +23,11 @@
             <name>Pierre Dal-Pra</name>
             <organization>Mediarithmics</organization>
         </developer>
+        <developer>
+            <id>skireev@mediarithmics.com</id>
+            <name>Sergei Kireev</name>
+            <organization>mediarithmics</organization>
+        </developer>
     </developers>
 
     <scm>
