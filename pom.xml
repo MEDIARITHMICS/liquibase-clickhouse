@@ -4,7 +4,7 @@
 
     <groupId>com.mediarithmics</groupId>
     <artifactId>liquibase-clickhouse</artifactId>
-    <version>0.5.1-SNAPSHOT</version>
+    <version>0.5.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <inceptionYear>2020</inceptionYear>
 
