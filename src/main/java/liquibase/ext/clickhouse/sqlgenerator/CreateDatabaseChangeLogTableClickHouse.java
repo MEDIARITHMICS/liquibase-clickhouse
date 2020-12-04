@@ -46,7 +46,7 @@ public class CreateDatabaseChangeLogTableClickHouse extends CreateDatabaseChange
       SqlGeneratorChain sqlGeneratorChain) {
     String createTableQuery =
         String.format(
-            "CREATE TABLE %s.%s ("
+            "CREATE TABLE IF NOT EXISTS %s.%s ("
                 + "ID String,"
                 + "AUTHOR String,"
                 + "FILENAME String,"
