@@ -4,7 +4,7 @@
 
     <groupId>com.mediarithmics</groupId>
     <artifactId>liquibase-clickhouse</artifactId>
-    <version>0.5.2</version>
+    <version>0.5.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <inceptionYear>2020</inceptionYear>
 
@@ -34,7 +34,7 @@
         <connection>scm:git:git:@github.com:mediarithmics/liquibase-clickhouse.git</connection>
         <developerConnection>scm:git:git:@github.com:mediarithmics/liquibase-clickhouse.git</developerConnection>
         <url>https://github.com/mediarithmics/liquibase-clickhouse</url>
-        <tag>0.5.2</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <licenses>
