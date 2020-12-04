@@ -47,7 +47,7 @@ public class CreateDatabaseChangeLogLockTableClickHouse
       SqlGeneratorChain sqlGeneratorChain) {
     String createTableQuery =
         String.format(
-            "CREATE TABLE %s.%s ("
+            "CREATE TABLE IF NOT EXISTS %s.%s ("
                 + "ID Int64,"
                 + "LOCKED UInt8,"
                 + "LOCKGRANTED Nullable(DateTime64),"
