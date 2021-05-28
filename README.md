@@ -12,3 +12,5 @@ Maven dependency:
     <version>Latest version from Maven Central</version>
 </dependency>
 ```
+
+Note: From the version 0.6.0 the extension is adapted for the liquibase v4.3.5.

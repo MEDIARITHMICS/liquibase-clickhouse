@@ -4,7 +4,7 @@
 
     <groupId>com.mediarithmics</groupId>
     <artifactId>liquibase-clickhouse</artifactId>
-    <version>0.5.3-SNAPSHOT</version>
+    <version>0.6.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <inceptionYear>2020</inceptionYear>
 
@@ -26,6 +26,11 @@
         <developer>
             <id>skireev@mediarithmics.com</id>
             <name>Sergei Kireev</name>
+            <organization>mediarithmics</organization>
+        </developer>
+        <developer>
+            <id>iepimakhov@mediarithmics.com</id>
+            <name>Igor Epimakhov</name>
             <organization>mediarithmics</organization>
         </developer>
     </developers>
@@ -61,10 +66,10 @@
         <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <clickhouse-jdbc.version>0.2.4</clickhouse-jdbc.version>
-        <liquibase.version>3.10.1</liquibase.version>
+        <clickhouse-jdbc.version>0.3.1</clickhouse-jdbc.version>
+        <liquibase.version>4.3.5</liquibase.version>
         <junit.version>5.4.0</junit.version>
-        <test-containers.version>1.14.3</test-containers.version>
+        <test-containers.version>1.15.3</test-containers.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
         <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
@@ -106,6 +111,17 @@
             <artifactId>junit-jupiter</artifactId>
             <version>${test-containers.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.30</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.28</version>
         </dependency>
     </dependencies>
 
