@@ -86,7 +86,9 @@ public class ClickHouseLockService extends StandardLockService {
   }
 
   private Executor getExecutor() {
-    return ExecutorService.getInstance().getExecutor("jdbc", database);
+    return Scope.getCurrentScope()
+        .getSingleton(ExecutorService.class)
+        .getExecutor("jdbc", database);
   }
 
   private Logger getLogger() {
