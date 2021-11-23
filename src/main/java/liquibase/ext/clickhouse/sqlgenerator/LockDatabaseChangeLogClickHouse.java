@@ -47,8 +47,8 @@ public class LockDatabaseChangeLogClickHouse extends LockDatabaseChangeLogGenera
     String host = String.format("%s %s (%s)", hostname, hostDescription, hostaddress);
     String lockQuery =
         String.format(
-            "ALTER TABLE %s.%s UPDATE LOCKED = 1,LOCKEDBY = '%s',LOCKGRANTED = now() WHERE ID = 1 AND LOCKED = 0",
-            database.getDefaultSchemaName(), database.getDatabaseChangeLogLockTableName(), host);
+            "ALTER TABLE %s.%s UPDATE LOCKED = 1,LOCKEDBY = '%s',LOCKGRANTED = %s WHERE ID = 1 AND LOCKED = 0",
+            database.getDefaultSchemaName(), database.getDatabaseChangeLogLockTableName(), host, ClickHouseDatabase.CURRENT_DATE_TIME_FUNCTION);
     return SqlGeneratorUtil.generateSql(database, lockQuery);
   }
 }
