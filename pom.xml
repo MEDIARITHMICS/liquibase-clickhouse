@@ -4,7 +4,7 @@
 
     <groupId>com.mediarithmics</groupId>
     <artifactId>liquibase-clickhouse</artifactId>
-    <version>0.6.0-SNAPSHOT</version>
+    <version>0.7.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <inceptionYear>2020</inceptionYear>
 
@@ -80,6 +80,8 @@
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+        <snakeyaml.version>1.28</snakeyaml.version>
+        <typesafe-config.version>1.4.1</typesafe-config.version>
     </properties>
 
     <dependencies>
@@ -113,15 +115,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>1.7.30</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.28</version>
+            <version>${snakeyaml.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+            <version>${typesafe-config.version}</version>
         </dependency>
     </dependencies>
 

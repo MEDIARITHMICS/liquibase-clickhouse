@@ -22,10 +22,14 @@ package liquibase.ext.clickhouse.sqlgenerator;
 import liquibase.ext.clickhouse.database.ClickHouseDatabase;
 
 import liquibase.database.Database;
+import liquibase.ext.clickhouse.params.ClusterConfig;
+import liquibase.ext.clickhouse.params.ParamsLoader;
 import liquibase.sql.Sql;
 import liquibase.sqlgenerator.SqlGeneratorChain;
 import liquibase.sqlgenerator.core.CreateDatabaseChangeLogTableGenerator;
 import liquibase.statement.core.CreateDatabaseChangeLogTableStatement;
+
+import java.util.Locale;
 
 public class CreateDatabaseChangeLogTableClickHouse extends CreateDatabaseChangeLogTableGenerator {
 
@@ -44,9 +48,14 @@ public class CreateDatabaseChangeLogTableClickHouse extends CreateDatabaseChange
       CreateDatabaseChangeLogTableStatement statement,
       Database database,
       SqlGeneratorChain sqlGeneratorChain) {
+    ClusterConfig properties = ParamsLoader.getLiquibaseClickhouseProperties();
+    String tableName = database.getDatabaseChangeLogTableName();
+
     String createTableQuery =
         String.format(
-            "CREATE TABLE IF NOT EXISTS %s.%s ("
+            "CREATE TABLE IF NOT EXISTS %s.%s "
+                + SqlGeneratorUtil.generateSqlOnClusterClause(properties)
+                + "("
                 + "ID String,"
                 + "AUTHOR String,"
                 + "FILENAME String,"
@@ -61,8 +70,10 @@ public class CreateDatabaseChangeLogTableClickHouse extends CreateDatabaseChange
                 + "CONTEXTS Nullable(String),"
                 + "LABELS Nullable(String),"
                 + "DEPLOYMENT_ID Nullable(String)) "
-                + "ENGINE MergeTree() ORDER BY ID",
-            database.getDefaultSchemaName(), database.getDatabaseChangeLogTableName());
+                + SqlGeneratorUtil.generateSqlEngineClause(
+                    properties, tableName.toLowerCase(Locale.ROOT)),
+            database.getDefaultSchemaName(),
+            tableName);
 
     return SqlGeneratorUtil.generateSql(database, createTableQuery);
   }

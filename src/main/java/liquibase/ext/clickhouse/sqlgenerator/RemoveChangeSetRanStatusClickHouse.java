@@ -23,6 +23,8 @@ import liquibase.ext.clickhouse.database.ClickHouseDatabase;
 
 import liquibase.changelog.ChangeSet;
 import liquibase.database.Database;
+import liquibase.ext.clickhouse.params.ClusterConfig;
+import liquibase.ext.clickhouse.params.ParamsLoader;
 import liquibase.sql.Sql;
 import liquibase.sqlgenerator.SqlGeneratorChain;
 import liquibase.sqlgenerator.core.RemoveChangeSetRanStatusGenerator;
@@ -45,10 +47,14 @@ public class RemoveChangeSetRanStatusClickHouse extends RemoveChangeSetRanStatus
       RemoveChangeSetRanStatusStatement statement,
       Database database,
       SqlGeneratorChain sqlGeneratorChain) {
+    ClusterConfig properties = ParamsLoader.getLiquibaseClickhouseProperties();
+
     ChangeSet changeSet = statement.getChangeSet();
     String unlockQuery =
         String.format(
-            "ALTER TABLE %s.%s DELETE WHERE ID = '%s' AND AUTHOR = '%s' AND FILENAME = '%s'",
+            "ALTER TABLE %s.%s "
+                + SqlGeneratorUtil.generateSqlOnClusterClause(properties)
+                + "DELETE WHERE ID = '%s' AND AUTHOR = '%s' AND FILENAME = '%s'",
             database.getDefaultSchemaName(),
             database.getDatabaseChangeLogTableName(),
             changeSet.getId(),
