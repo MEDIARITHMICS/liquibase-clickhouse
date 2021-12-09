@@ -67,7 +67,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <clickhouse-jdbc.version>0.3.1</clickhouse-jdbc.version>
-        <liquibase.version>4.3.5</liquibase.version>
+        <liquibase.version>4.6.1</liquibase.version>
         <junit.version>5.4.0</junit.version>
         <test-containers.version>1.15.3</test-containers.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
