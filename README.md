@@ -28,7 +28,7 @@ Your updates should also affect the entire cluster either by using ON CLUSTER cl
 <hr/>
 
 ###### Important changes
-From the version 0.7.0 the liquibase-clickhouse supports replication on a cluster. 
+From the version 0.7.0 the liquibase-clickhouse supports replication on a cluster. Liquibase v4.6.1.
 
 From the version 0.6.0 the extension adapted for the liquibase v4.3.5.
 
