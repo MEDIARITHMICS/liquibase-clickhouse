@@ -67,11 +67,11 @@ public class ClickHouseTest {
   @Test
   void canTagDatabase() {
     runLiquibase(
-            "changelog.xml",
-            (liquibase, database) -> {
-              liquibase.update("");
-              liquibase.tag("testTag");
-            });
+        "changelog.xml",
+        (liquibase, database) -> {
+          liquibase.update("");
+          liquibase.tag("testTag");
+        });
   }
 
   @Test
