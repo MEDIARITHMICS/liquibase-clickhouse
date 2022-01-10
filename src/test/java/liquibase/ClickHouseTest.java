@@ -65,6 +65,16 @@ public class ClickHouseTest {
   }
 
   @Test
+  void canTagDatabase() {
+    runLiquibase(
+        "changelog.xml",
+        (liquibase, database) -> {
+          liquibase.update("");
+          liquibase.tag("testTag");
+        });
+  }
+
+  @Test
   void canValidate() {
     runLiquibase("changelog.xml", (liquibase, database) -> liquibase.validate());
   }
