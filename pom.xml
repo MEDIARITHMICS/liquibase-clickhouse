@@ -227,20 +227,20 @@
                             <shadedClassifierName>shaded</shadedClassifierName>
                             <relocations>
                                 <relocation>
-                                    <pattern>com</pattern>
-                                    <shadedPattern>shaded.liquibase.com</shadedPattern>
+                                    <pattern>com.</pattern>
+                                    <shadedPattern>shaded.liquibase.com.</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>net</pattern>
-                                    <shadedPattern>shaded.liquibase.net</shadedPattern>
+                                    <pattern>net.</pattern>
+                                    <shadedPattern>shaded.liquibase.net.</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>org</pattern>
-                                    <shadedPattern>shaded.liquibase.org</shadedPattern>
+                                    <pattern>org.</pattern>
+                                    <shadedPattern>shaded.liquibase.org.</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>ru</pattern>
-                                    <shadedPattern>shaded.liquibase.ru</shadedPattern>
+                                    <pattern>ru.</pattern>
+                                    <shadedPattern>shaded.liquibase.ru.</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
