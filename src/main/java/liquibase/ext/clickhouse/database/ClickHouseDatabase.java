@@ -2,7 +2,7 @@
  * #%L
  * Liquibase extension for Clickhouse
  * %%
- * Copyright (C) 2020 Mediarithmics
+ * Copyright (C) 2020 - 2022 Mediarithmics
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,13 +19,13 @@
  */
 package liquibase.ext.clickhouse.database;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import liquibase.database.AbstractJdbcDatabase;
 import liquibase.database.DatabaseConnection;
 import liquibase.exception.DatabaseException;
 import ru.yandex.clickhouse.ClickHouseDriver;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class ClickHouseDatabase extends AbstractJdbcDatabase {
 

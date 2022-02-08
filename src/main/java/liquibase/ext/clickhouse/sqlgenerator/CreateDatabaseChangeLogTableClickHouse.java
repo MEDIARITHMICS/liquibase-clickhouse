@@ -2,7 +2,7 @@
  * #%L
  * Liquibase extension for Clickhouse
  * %%
- * Copyright (C) 2020 Mediarithmics
+ * Copyright (C) 2020 - 2022 Mediarithmics
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,17 @@
  */
 package liquibase.ext.clickhouse.sqlgenerator;
 
-import liquibase.ext.clickhouse.database.ClickHouseDatabase;
+import java.util.Locale;
 
-import liquibase.database.Database;
+import liquibase.ext.clickhouse.database.ClickHouseDatabase;
 import liquibase.ext.clickhouse.params.ClusterConfig;
 import liquibase.ext.clickhouse.params.ParamsLoader;
+
+import liquibase.database.Database;
 import liquibase.sql.Sql;
 import liquibase.sqlgenerator.SqlGeneratorChain;
 import liquibase.sqlgenerator.core.CreateDatabaseChangeLogTableGenerator;
 import liquibase.statement.core.CreateDatabaseChangeLogTableStatement;
-
-import java.util.Locale;
 
 public class CreateDatabaseChangeLogTableClickHouse extends CreateDatabaseChangeLogTableGenerator {
 
