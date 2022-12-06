@@ -54,7 +54,8 @@ public class UpdateChangeSetChecksumClickHouse extends UpdateChangeSetChecksumGe
         String.format(
             "ALTER TABLE %s.%s "
                 + SqlGeneratorUtil.generateSqlOnClusterClause(properties)
-                + "UPDATE MD5SUM = '%s' WHERE ID = '%s' AND AUTHOR = '%s' AND FILENAME = '%s'",
+                + "UPDATE MD5SUM = '%s' WHERE ID = '%s' AND AUTHOR = '%s' AND FILENAME = '%s'"
+                + " SETTINGS mutations_sync = 1",
             database.getDefaultSchemaName(),
             database.getDatabaseChangeLogTableName(),
             changeSet.generateCheckSum().toString(),
