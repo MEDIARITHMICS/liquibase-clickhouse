@@ -2,7 +2,7 @@
  * #%L
  * Liquibase extension for Clickhouse
  * %%
- * Copyright (C) 2020 - 2022 Mediarithmics
+ * Copyright (C) 2020 - 2023 Mediarithmics
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,10 @@ package liquibase.ext.clickhouse.database;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.clickhouse.jdbc.ClickHouseDriver;
 import liquibase.database.AbstractJdbcDatabase;
 import liquibase.database.DatabaseConnection;
 import liquibase.exception.DatabaseException;
-import ru.yandex.clickhouse.ClickHouseDriver;
 
 public class ClickHouseDatabase extends AbstractJdbcDatabase {
 
@@ -89,6 +89,11 @@ public class ClickHouseDatabase extends AbstractJdbcDatabase {
 
   @Override
   public boolean supportsSchemas() {
+    return false;
+  }
+
+  @Override
+  public boolean supportsDDLInTransaction() {
     return false;
   }
 }

@@ -2,7 +2,7 @@
  * #%L
  * Liquibase extension for Clickhouse
  * %%
- * Copyright (C) 2020 - 2022 Mediarithmics
+ * Copyright (C) 2020 - 2023 Mediarithmics
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ public class ClickHouseTest {
 
   @Container
   private static ClickHouseContainer clickHouseContainer =
-      new ClickHouseContainer("yandex/clickhouse-server:20.3");
+      new ClickHouseContainer("clickhouse/clickhouse-server:22.3.8.39");
 
   @Test
   void canInitializeLiquibaseSchema() {
