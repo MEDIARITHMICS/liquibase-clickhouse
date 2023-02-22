@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -66,10 +67,10 @@
         <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <clickhouse-jdbc.version>0.3.1</clickhouse-jdbc.version>
-        <liquibase.version>4.6.1</liquibase.version>
+        <clickhouse-jdbc.version>0.3.2</clickhouse-jdbc.version>
+        <liquibase.version>4.15.0</liquibase.version>
         <junit.version>5.4.0</junit.version>
-        <test-containers.version>1.15.3</test-containers.version>
+        <test-containers.version>1.17.3</test-containers.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
         <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
@@ -86,7 +87,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>ru.yandex.clickhouse</groupId>
+            <groupId>com.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
             <version>${clickhouse-jdbc.version}</version>
         </dependency>

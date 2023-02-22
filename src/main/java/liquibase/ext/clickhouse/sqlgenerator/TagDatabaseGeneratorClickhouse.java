@@ -87,7 +87,7 @@ public class TagDatabaseGeneratorClickhouse extends TagDatabaseGenerator {
               + dateColumnNameEscaped
               + " DESC, "
               + orderColumnNameEscaped
-              + " DESC LIMIT 1)")
+              + " DESC LIMIT 1) SETTINGS mutations_sync = 1")
     };
   }
 }

@@ -54,7 +54,7 @@ public class InitializeDatabaseChangeLogLockClickHouse
         String.format(
             "ALTER TABLE %s.%s "
                 + SqlGeneratorUtil.generateSqlOnClusterClause(properties)
-                + "DELETE WHERE 1",
+                + "DELETE WHERE 1 SETTINGS mutations_sync = 1",
             database.getDefaultSchemaName(),
             database.getDatabaseChangeLogLockTableName());
 
