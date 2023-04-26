@@ -67,22 +67,23 @@
         <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <clickhouse-jdbc.version>0.3.2</clickhouse-jdbc.version>
-        <liquibase.version>4.15.0</liquibase.version>
-        <junit.version>5.4.0</junit.version>
-        <test-containers.version>1.17.3</test-containers.version>
-        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+        <clickhouse-jdbc.version>0.4.5</clickhouse-jdbc.version>
+        <liquibase.version>4.21.1</liquibase.version>
+        <junit.version>5.9.2</junit.version>
+        <test-containers.version>1.18.0</test-containers.version>
+        <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
         <maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
-        <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
         <license-maven-plugin.version>2.0.0</license-maven-plugin.version>
-        <maven-shade-plugin.version>3.2.0</maven-shade-plugin.version>
-        <fmt-maven-plugin.version>2.9.1</fmt-maven-plugin.version>
-        <impsort-maven-plugin.version>1.4.1</impsort-maven-plugin.version>
+        <maven-shade-plugin.version>3.4.1</maven-shade-plugin.version>
+        <fmt-maven-plugin.version>2.19</fmt-maven-plugin.version>
+        <impsort-maven-plugin.version>1.8.0</impsort-maven-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <snakeyaml.version>1.28</snakeyaml.version>
-        <typesafe-config.version>1.4.1</typesafe-config.version>
+        <snakeyaml.version>2.0</snakeyaml.version>
+        <typesafe-config.version>1.4.2</typesafe-config.version>
+        <lz4.version>1.8.0</lz4.version>
     </properties>
 
     <dependencies>
@@ -124,6 +125,11 @@
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
             <version>${typesafe-config.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.lz4</groupId>
+            <artifactId>lz4-java</artifactId>
+            <version>${lz4.version}</version>
         </dependency>
     </dependencies>
 
@@ -249,7 +255,7 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>com.coveo</groupId>
+                <groupId>com.spotify.fmt</groupId>
                 <artifactId>fmt-maven-plugin</artifactId>
                 <version>${fmt-maven-plugin.version}</version>
                 <configuration>

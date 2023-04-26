@@ -26,6 +26,8 @@ import com.clickhouse.jdbc.ClickHouseDriver;
 import liquibase.database.AbstractJdbcDatabase;
 import liquibase.database.DatabaseConnection;
 import liquibase.exception.DatabaseException;
+import liquibase.statement.SqlStatement;
+import liquibase.statement.core.RawSqlStatement;
 
 public class ClickHouseDatabase extends AbstractJdbcDatabase {
 
@@ -89,11 +91,16 @@ public class ClickHouseDatabase extends AbstractJdbcDatabase {
 
   @Override
   public boolean supportsSchemas() {
-    return false;
+    return true;
   }
 
   @Override
   public boolean supportsDDLInTransaction() {
     return false;
+  }
+
+  @Override
+  protected SqlStatement getConnectionSchemaNameCallStatement() {
+    return new RawSqlStatement("SELECT currentDatabase()");
   }
 }

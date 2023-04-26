@@ -20,8 +20,6 @@
 package liquibase.ext.clickhouse.sqlgenerator;
 
 import liquibase.ext.clickhouse.database.ClickHouseDatabase;
-import liquibase.ext.clickhouse.params.ClusterConfig;
-import liquibase.ext.clickhouse.params.ParamsLoader;
 
 import liquibase.database.Database;
 import liquibase.sql.Sql;
@@ -46,15 +44,11 @@ public class UnlockDatabaseChangelogClickHouse extends UnlockDatabaseChangeLogGe
       UnlockDatabaseChangeLogStatement statement,
       Database database,
       SqlGeneratorChain sqlGeneratorChain) {
-    ClusterConfig properties = ParamsLoader.getLiquibaseClickhouseProperties();
 
     String unlockQuery =
         String.format(
-            "ALTER TABLE %s.%s "
-                + SqlGeneratorUtil.generateSqlOnClusterClause(properties)
-                + "UPDATE LOCKED = 0,LOCKEDBY = null, LOCKGRANTED = null WHERE ID = 1 AND LOCKED = 1 SETTINGS mutations_sync = 1",
-            database.getDefaultSchemaName(),
-            database.getDatabaseChangeLogLockTableName());
+            "SET allow_experimental_lightweight_delete = 1; DELETE FROM %s.%s WHERE ID = 1;",
+            database.getDefaultSchemaName(), database.getDatabaseChangeLogLockTableName());
 
     return SqlGeneratorUtil.generateSql(database, unlockQuery);
   }
