@@ -22,14 +22,17 @@ package liquibase.ext.clickhouse.lockservice;
 import liquibase.ext.clickhouse.database.ClickHouseDatabase;
 
 import liquibase.Scope;
+import liquibase.changelog.ChangeLogHistoryServiceFactory;
 import liquibase.database.Database;
 import liquibase.exception.DatabaseException;
 import liquibase.exception.LiquibaseException;
+import liquibase.exception.LockException;
 import liquibase.exception.UnexpectedLiquibaseException;
 import liquibase.executor.Executor;
 import liquibase.executor.ExecutorService;
 import liquibase.lockservice.StandardLockService;
 import liquibase.logging.Logger;
+import liquibase.statement.core.LockDatabaseChangeLogStatement;
 import liquibase.statement.core.RawSqlStatement;
 
 public class ClickHouseLockService extends StandardLockService {
@@ -68,21 +71,81 @@ public class ClickHouseLockService extends StandardLockService {
   }
 
   @Override
-  public boolean hasDatabaseChangeLogLockTable() {
-    boolean hasTable = false;
+  public boolean hasDatabaseChangeLogLockTable(boolean forceRecheck) {
+    if (forceRecheck || hasDatabaseChangeLogLockTable == null) {
+      try {
+        String query =
+            String.format(
+                "SELECT ID FROM %s.%s LIMIT 1",
+                database.getDefaultSchemaName(), database.getDatabaseChangeLogLockTableName());
+        getExecutor().execute(new RawSqlStatement(query));
+        hasDatabaseChangeLogLockTable = true;
+      } catch (DatabaseException e) {
+        getLogger()
+            .info(
+                String.format(
+                    "No %s table available", database.getDatabaseChangeLogLockTableName()));
+        hasDatabaseChangeLogLockTable = false;
+      }
+    }
+    return hasDatabaseChangeLogLockTable;
+  }
+
+  @Override
+  public boolean acquireLock() throws LockException {
+    if (hasChangeLogLock) {
+      return true;
+    }
+
+    quotingStrategy = database.getObjectQuotingStrategy();
+
+    Executor executor =
+        Scope.getCurrentScope().getSingleton(ExecutorService.class).getExecutor("jdbc", database);
+
     try {
+      database.rollback();
+      this.init();
+
       String query =
           String.format(
-              "SELECT ID FROM %s.%s LIMIT 1",
+              "SELECT MAX(LOCKED) FROM %s.%s",
               database.getDefaultSchemaName(), database.getDatabaseChangeLogLockTableName());
-      getExecutor().execute(new RawSqlStatement(query));
-      hasTable = true;
-    } catch (DatabaseException e) {
-      getLogger()
-          .info(
-              String.format("No %s table available", database.getDatabaseChangeLogLockTableName()));
+      boolean locked = executor.queryForInt(new RawSqlStatement(query)) > 0;
+
+      if (locked) {
+        return false;
+      } else {
+
+        executor.comment("Lock Database");
+        int rowsUpdated = executor.update(new LockDatabaseChangeLogStatement());
+
+        if (rowsUpdated > 1) {
+          throw new LockException("Did not update change log lock correctly");
+        }
+        if (rowsUpdated == 0) {
+          // another node was faster
+          return false;
+        }
+        database.commit();
+        Scope.getCurrentScope()
+            .getLog(getClass())
+            .info(coreBundle.getString("successfully.acquired.change.log.lock"));
+
+        hasChangeLogLock = true;
+
+        ChangeLogHistoryServiceFactory.getInstance().resetAll();
+        database.setCanCacheLiquibaseTableInfo(true);
+        return true;
+      }
+    } catch (Exception e) {
+      throw new LockException(e);
+    } finally {
+      try {
+        database.rollback();
+      } catch (DatabaseException ignored) {
+
+      }
     }
-    return hasTable;
   }
 
   private Executor getExecutor() {
