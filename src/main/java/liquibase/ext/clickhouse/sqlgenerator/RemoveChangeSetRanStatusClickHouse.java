@@ -52,7 +52,7 @@ public class RemoveChangeSetRanStatusClickHouse extends RemoveChangeSetRanStatus
     ChangeSet changeSet = statement.getChangeSet();
     String unlockQuery =
         String.format(
-            "ALTER TABLE %s.%s "
+            "ALTER TABLE `%s`.%s "
                 + SqlGeneratorUtil.generateSqlOnClusterClause(properties)
                 + "DELETE WHERE ID = '%s' AND AUTHOR = '%s' AND FILENAME = '%s' SETTINGS mutations_sync = 1",
             database.getDefaultSchemaName(),

@@ -54,7 +54,7 @@ public class CreateDatabaseChangeLogLockTableClickHouse
 
     String createTableQuery =
         String.format(
-            "CREATE TABLE IF NOT EXISTS %s.%s "
+            "CREATE TABLE IF NOT EXISTS `%s`.%s "
                 + SqlGeneratorUtil.generateSqlOnClusterClause(properties)
                 + "("
                 + "ID Int64,"
