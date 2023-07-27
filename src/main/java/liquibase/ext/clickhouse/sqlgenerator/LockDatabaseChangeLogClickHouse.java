@@ -51,7 +51,7 @@ public class LockDatabaseChangeLogClickHouse extends LockDatabaseChangeLogGenera
     String host = String.format("%s %s (%s)", hostname, hostDescription, hostaddress);
     String lockQuery =
         String.format(
-            "ALTER TABLE %s.%s "
+            "ALTER TABLE `%s`.%s "
                 + SqlGeneratorUtil.generateSqlOnClusterClause(properties)
                 + "UPDATE LOCKED = 1,LOCKEDBY = '%s',LOCKGRANTED = %s WHERE ID = 1 AND LOCKED = 0 SETTINGS mutations_sync = 1",
             database.getDefaultSchemaName(),

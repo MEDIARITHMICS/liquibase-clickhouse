@@ -52,7 +52,7 @@ public class ClickHouseLockService extends StandardLockService {
       try {
         String query =
             String.format(
-                "SELECT COUNT(*) FROM %s.%s",
+                "SELECT COUNT(*) FROM `%s`.%s",
                 database.getDefaultSchemaName(), database.getDatabaseChangeLogLockTableName());
         int nbRows = getExecutor().queryForInt(new RawSqlStatement(query));
         isLockTableInitialized = nbRows > 0;
@@ -73,7 +73,7 @@ public class ClickHouseLockService extends StandardLockService {
     try {
       String query =
           String.format(
-              "SELECT ID FROM %s.%s LIMIT 1",
+              "SELECT ID FROM `%s`.%s LIMIT 1",
               database.getDefaultSchemaName(), database.getDatabaseChangeLogLockTableName());
       getExecutor().execute(new RawSqlStatement(query));
       hasTable = true;
