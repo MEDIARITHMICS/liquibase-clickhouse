@@ -7,3 +7,4 @@ liquibase.ext.clickhouse.sqlgenerator.ModifyDataTypeClickHouse
 liquibase.ext.clickhouse.sqlgenerator.RemoveChangeSetRanStatusClickHouse
 liquibase.ext.clickhouse.sqlgenerator.UpdateChangeSetChecksumClickHouse
 liquibase.ext.clickhouse.sqlgenerator.TagDatabaseGeneratorClickhouse
+liquibase.ext.clickhouse.sqlgenerator.UpdateGeneratorClickHouse
