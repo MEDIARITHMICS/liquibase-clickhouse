@@ -31,6 +31,7 @@ public class ClickHouseDatabase extends AbstractJdbcDatabase {
 
   private static final String DATABASE_NAME = "ClickHouse";
   private static final int DEFAULT_PORT = 8123;
+  private static final String DEFAULT_CATALOG_NAME = "default";
   private static final String DRIVER_CLASS_NAME = ClickHouseDriver.class.getName();
   public static final String CURRENT_DATE_TIME_FUNCTION =
       "toDateTime64('"
@@ -50,6 +51,11 @@ public class ClickHouseDatabase extends AbstractJdbcDatabase {
   @Override
   protected String getDefaultDatabaseProductName() {
     return DATABASE_NAME;
+  }
+
+  @Override
+  public String getDefaultCatalogName() {
+    return DEFAULT_CATALOG_NAME;
   }
 
   @Override

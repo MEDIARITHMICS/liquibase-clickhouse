@@ -67,7 +67,7 @@
         <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <clickhouse-jdbc.version>0.3.2</clickhouse-jdbc.version>
+        <clickhouse-jdbc.version>0.4.0</clickhouse-jdbc.version>
         <liquibase.version>4.15.0</liquibase.version>
         <junit.version>5.4.0</junit.version>
         <test-containers.version>1.17.3</test-containers.version>
@@ -75,7 +75,7 @@
         <maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
         <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
         <license-maven-plugin.version>2.0.0</license-maven-plugin.version>
-        <maven-shade-plugin.version>3.2.0</maven-shade-plugin.version>
+        <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
         <fmt-maven-plugin.version>2.9.1</fmt-maven-plugin.version>
         <impsort-maven-plugin.version>1.4.1</impsort-maven-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
