@@ -36,8 +36,8 @@ import org.testcontainers.shaded.org.apache.commons.io.output.NullWriter;
 public class ClickHouseTest {
 
   @Container
-  private static ClickHouseContainer clickHouseContainer =
-      new ClickHouseContainer("clickhouse/clickhouse-server:23.7.4.5-alpine");
+  static ClickHouseContainer clickHouseContainer =
+      new ClickHouseContainer("clickhouse/clickhouse-server:23.7.4.5");
 
   @Test
   void canInitializeLiquibaseSchema() {
@@ -115,6 +115,7 @@ public class ClickHouseTest {
       Connection connection = clickHouseContainer.createConnection("");
       JdbcConnection jdbcConnection = new JdbcConnection(connection);
       Database database = dbFactory.findCorrectDatabaseImplementation(jdbcConnection);
+      database.setDefaultSchemaName("default");
       Liquibase liquibase = new Liquibase(changelog, resourceAccessor, database);
       liquibaseAction.accept(liquibase, database);
     } catch (Exception e) {

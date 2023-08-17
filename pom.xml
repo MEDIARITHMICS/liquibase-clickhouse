@@ -29,9 +29,11 @@
         <compiler.plugin.version>3.8.1</compiler.plugin.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
         <clickhouse-jdbc.version>0.4.6</clickhouse-jdbc.version>
         <liquibase.version>4.7.0</liquibase.version>
+        <jboss-logging.version>3.5.3.Final</jboss-logging.version>
+        <slf4j-reload.version>2.0.7</slf4j-reload.version>
         <junit.version>5.4.0</junit.version>
         <test-containers.version>1.18.3</test-containers.version>
         <snakeyaml.version>1.28</snakeyaml.version>
@@ -49,6 +51,22 @@
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging</artifactId>
+            <version>${jboss-logging.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-reload4j</artifactId>
+            <version>${slf4j-reload.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.lz4</groupId>
+            <artifactId>lz4-java</artifactId>
+            <version>1.8.0</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
