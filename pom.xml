@@ -3,45 +3,15 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.mediarithmics</groupId>
-    <artifactId>liquibase-clickhouse</artifactId>
-    <version>0.7.3-SNAPSHOT</version>
-    <packaging>jar</packaging>
-    <inceptionYear>2020</inceptionYear>
+    <groupId>io.beekeeper</groupId>
+    <artifactId>beekeeper-liquibase-clickhouse</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
 
-    <name>Liquibase extension for ClickHouse</name>
-    <description>A Liquibase extension for the ClickHouse database.</description>
-    <url>https://github.com/mediarithmics/liquibase-clickhouse</url>
+    <name>Liquibase extension for ClickHouse. Fork of: https://github.com/beekpr/beekeeper-liquibase-clickhouse</name>
+    <description>A Liquibase extension for the ClickHouse database. Fork of: https://github.com/mediarithmics/liquibase-clickhouse</description>
+    <url>https://github.com/beekpr/beekeeper-liquibase-clickhouse</url>
 
-    <organization>
-        <name>Mediarithmics</name>
-        <url>https://www.mediarithmics.com</url>
-    </organization>
-
-    <developers>
-        <developer>
-            <id>pdalpra@mediarithmics.com</id>
-            <name>Pierre Dal-Pra</name>
-            <organization>Mediarithmics</organization>
-        </developer>
-        <developer>
-            <id>skireev@mediarithmics.com</id>
-            <name>Sergei Kireev</name>
-            <organization>mediarithmics</organization>
-        </developer>
-        <developer>
-            <id>iepimakhov@mediarithmics.com</id>
-            <name>Igor Epimakhov</name>
-            <organization>mediarithmics</organization>
-        </developer>
-    </developers>
-
-    <scm>
-        <connection>scm:git:git:@github.com:mediarithmics/liquibase-clickhouse.git</connection>
-        <developerConnection>scm:git:git:@github.com:mediarithmics/liquibase-clickhouse.git</developerConnection>
-        <url>https://github.com/mediarithmics/liquibase-clickhouse</url>
-        <tag>HEAD</tag>
-    </scm>
 
     <licenses>
         <license>
@@ -51,36 +21,16 @@
         </license>
     </licenses>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
 
     <properties>
         <encoding>UTF-8</encoding>
         <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <clickhouse-jdbc.version>0.3.2</clickhouse-jdbc.version>
-        <liquibase.version>4.15.0</liquibase.version>
+        <maven.compiler.source>1.17</maven.compiler.source>
+        <maven.compiler.target>1.17</maven.compiler.target>
+        <clickhouse-jdbc.version>0.4.6</clickhouse-jdbc.version>
+        <liquibase.version>4.7.0</liquibase.version>
         <junit.version>5.4.0</junit.version>
-        <test-containers.version>1.17.3</test-containers.version>
-        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
-        <maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
-        <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
-        <license-maven-plugin.version>2.0.0</license-maven-plugin.version>
-        <maven-shade-plugin.version>3.2.0</maven-shade-plugin.version>
-        <fmt-maven-plugin.version>2.9.1</fmt-maven-plugin.version>
-        <impsort-maven-plugin.version>1.4.1</impsort-maven-plugin.version>
-        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
-        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+        <test-containers.version>1.18.3</test-containers.version>
         <snakeyaml.version>1.28</snakeyaml.version>
         <typesafe-config.version>1.4.1</typesafe-config.version>
     </properties>
@@ -130,163 +80,46 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>${maven-source-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>${maven-gpg-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <tagNameFormat>@{project.version}</tagNameFormat>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>${license-maven-plugin.version}</version>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.1.0</version>
                 <configuration>
-                    <licenseName>apache_v2</licenseName>
-                    <licenseFile>LICENSE</licenseFile>
-                    <canUpdateCopyright>true</canUpdateCopyright>
-                    <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
-                    <includes>
-                        <include>**/*.java</include>
-                    </includes>
-                    <roots>
-                        <root>src/main/java</root>
-                        <root>src/test</root>
-                    </roots>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
                 </configuration>
                 <executions>
                     <execution>
-                        <phase>process-sources</phase>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
                         <goals>
-                            <goal>update-file-header</goal>
-                            <goal>update-project-license</goal>
-                            <goal>add-third-party</goal>
+                            <goal>flatten</goal>
                         </goals>
                     </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>${nexus-staging-maven-plugin.version}</version>
-                <configuration>
-                    <serverId>sonatype-nexus-staging</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>${maven-shade-plugin.version}</version>
-                <executions>
                     <execution>
-                        <phase>package</phase>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
                         <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>shaded</shadedClassifierName>
-                            <relocations>
-                                <relocation>
-                                    <pattern>com.</pattern>
-                                    <shadedPattern>shaded.liquibase.com.</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>net.</pattern>
-                                    <shadedPattern>shaded.liquibase.net.</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.</pattern>
-                                    <shadedPattern>shaded.liquibase.org.</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>ru.</pattern>
-                                    <shadedPattern>shaded.liquibase.ru.</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.coveo</groupId>
-                <artifactId>fmt-maven-plugin</artifactId>
-                <version>${fmt-maven-plugin.version}</version>
-                <configuration>
-                    <skipSortingImports>true</skipSortingImports>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>format</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>net.revelc.code</groupId>
-                <artifactId>impsort-maven-plugin</artifactId>
-                <version>${impsort-maven-plugin.version}</version>
-                <configuration>
-                    <removeUnused>true</removeUnused>
-                    <groups>java.,javax.,liquibase.ext.clickhouse.</groups>
-                    <staticGroups>java,*</staticGroups>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>sort</goal>
+                            <goal>clean</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>bkpr-nexus</id>
+            <url>${env.NEXUS_URL}</url>
+        </repository>
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <id>bkpr-nexus</id>
+            <url>https://nexus.internal.beekeeper.io/repository/beekeeper-maven-central/</url>
+        </repository>
+    </repositories>
+
+
 
 </project>

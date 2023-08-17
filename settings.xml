@@ -1,0 +1,9 @@
+<settings>
+    <servers>
+        <server>
+            <id>bkpr-nexus</id>
+            <username>${env.NEXUS_USERNAME}</username>
+            <password>${env.NEXUS_PASSWORD}</password>
+        </server>
+    </servers>
+</settings>
