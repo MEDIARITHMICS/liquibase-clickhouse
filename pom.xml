@@ -6,7 +6,7 @@
     <groupId>io.beekeeper</groupId>
     <artifactId>beekeeper-liquibase-clickhouse</artifactId>
     <version>${revision}</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <name>Liquibase extension for ClickHouse. Fork of: https://github.com/beekpr/beekeeper-liquibase-clickhouse</name>
     <description>A Liquibase extension for the ClickHouse database. Fork of: https://github.com/mediarithmics/liquibase-clickhouse</description>
@@ -23,10 +23,13 @@
 
 
     <properties>
+        <revision>SNAPSHOT</revision>
         <encoding>UTF-8</encoding>
         <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
-        <maven.compiler.source>1.17</maven.compiler.source>
-        <maven.compiler.target>1.17</maven.compiler.target>
+        <compiler.plugin.version>3.8.1</compiler.plugin.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
         <clickhouse-jdbc.version>0.4.6</clickhouse-jdbc.version>
         <liquibase.version>4.7.0</liquibase.version>
         <junit.version>5.4.0</junit.version>
@@ -80,6 +83,15 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugin.version}</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
                 <version>1.1.0</version>
@@ -119,7 +131,4 @@
             <url>https://nexus.internal.beekeeper.io/repository/beekeeper-maven-central/</url>
         </repository>
     </repositories>
-
-
-
 </project>
