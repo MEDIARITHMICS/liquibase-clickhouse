@@ -81,7 +81,7 @@
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <snakeyaml.version>1.28</snakeyaml.version>
+        <snakeyaml.version>1.32</snakeyaml.version>
         <typesafe-config.version>1.4.1</typesafe-config.version>
     </properties>
 
