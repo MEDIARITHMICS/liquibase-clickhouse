@@ -160,9 +160,7 @@ public class ClickHouseClusterTest extends BaseClickHouseTest {
                 .withExposedService("nginx", 8123)
                 // for debug
                 .withExposedService("clickhouse-s2r2", 9000)
-                .withEnv("CLICKHOUSE_USER", "default")
-                .withEnv("CLICKHOUSE_IMAGE", "clickhouse/clickhouse-server:24.2")
-                .withEnv("ZOOKEEPER_VERSION", "3.6.3");
+                .withEnv("CLICKHOUSE_USER", "default");
         container.start();
         return container;
     }

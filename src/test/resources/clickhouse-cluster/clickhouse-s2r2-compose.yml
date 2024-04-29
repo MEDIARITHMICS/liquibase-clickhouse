@@ -14,13 +14,13 @@
 
 services:
   zookeeper:
-    image: zookeeper:${ZOOKEEPER_VERSION}
+    image: zookeeper:3.9.2
     ports:
       - 2181
     hostname: zookeeper
 
   clickhouse-s1r1:
-    image: ${CLICKHOUSE_IMAGE}
+    image: clickhouse/clickhouse-server:24.3.2
     hostname: clickhouse-s1r1
     ports:
       - 8123
@@ -38,7 +38,7 @@ services:
       - zookeeper
 
   clickhouse-s1r2:
-    image: ${CLICKHOUSE_IMAGE}
+    image: clickhouse/clickhouse-server:24.3.2
     hostname: clickhouse-s1r2
     ports:
       - 8123
@@ -56,7 +56,7 @@ services:
       - zookeeper
 
   clickhouse-s2r1:
-    image: ${CLICKHOUSE_IMAGE}
+    image: clickhouse/clickhouse-server:24.3.2
     hostname: clickhouse-s2r1
     ports:
       - 8123
@@ -74,7 +74,7 @@ services:
       - zookeeper
 
   clickhouse-s2r2:
-    image: ${CLICKHOUSE_IMAGE}
+    image: clickhouse/clickhouse-server:24.3.2
     hostname: clickhouse-s2r2
     ports:
       - 8123
@@ -92,7 +92,7 @@ services:
       - zookeeper
 
   nginx:
-    image: nginx:stable-alpine
+    image: nginx:1.26.0
     ports:
       - 8123
     volumes:

@@ -32,7 +32,7 @@ public class ClickHouseTest extends BaseClickHouseTest {
 
   @Container
   private static final ClickHouseContainer clickHouseContainer =
-      new ClickHouseContainer("clickhouse/clickhouse-server:24.1.6");
+      new ClickHouseContainer("clickhouse/clickhouse-server:24.3.2");
 
   @Override
   protected void doWithConnection(ThrowingConsumer<Connection> consumer) {
