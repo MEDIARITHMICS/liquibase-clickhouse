@@ -1,36 +1,17 @@
-# liquibase-clickhouse [![maven][maven-image]][maven-url]
-                       
-[maven-image]: https://img.shields.io/maven-central/v/com.mediarithmics/liquibase-clickhouse.svg?maxAge=259200&style=for-the-badge&color=brithgreen&label=com.mediarithmics:liquibase-clickhouse
-[maven-url]: https://search.maven.org/search?q=a:liquibase-clickhouse
-Supported operations: update, rollback (with provided SQL script), tag
+# liquibase-clickhouse-fork-4.30 [![maven][maven-image]][maven-url]
 
+[maven-image]: https://img.shields.io/maven-central/v/io.github.tridog/liquibase-clickhouse-fork-4.30.svg?maxAge=259200&style=for-the-badge&color=brithgreen&label=io.github.tridog:liquibase-clickhouse-fork-4.30
+[maven-url]: https://search.maven.org/search?q=a:liquibase-clickhouse-fork-4.30
 
 Maven dependency:
 
 ```
 <dependency>
-    <groupId>com.mediarithmics</groupId>
-    <artifactId>liquibase-clickhouse</artifactId>
+    <groupId>io.github.tridog</groupId>
+    <artifactId>liquibase-clickhouse-fork-4.30</artifactId>
     <version>Latest version from Maven Central</version>
 </dependency>
 ```
 
-The cluster mode can be activated by adding the **_liquibaseClickhouse.conf_** file to the classpath (liquibase/lib/).
-```
-cluster {
-    clusterName="{cluster}"
-    tableZooKeeperPathPrefix="/clickhouse/tables/{shard}/{database}/"
-    tableReplicaName="{replica}"
-}
-```
-In this mode, liquibase will create its own tables as replicated.<br/>
-All changes in these files will be replicated on the entire cluster.<br/>
-Your updates should also affect the entire cluster either by using ON CLUSTER clause, or by using replicated tables.
-
-<hr/>
-
-###### Important changes
-From the version 0.7.0 the liquibase-clickhouse supports replication on a cluster. Liquibase v4.6.1.
-
-From the version 0.6.0 the extension adapted for the liquibase v4.3.5.
-
+Forked from https://github.com/MEDIARITHMICS/liquibase-clickhouse
+This fork contains only support for liquibase 4.30 and dependencies update

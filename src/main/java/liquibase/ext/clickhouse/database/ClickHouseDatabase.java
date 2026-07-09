@@ -19,19 +19,21 @@
  */
 package liquibase.ext.clickhouse.database;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import com.clickhouse.jdbc.ClickHouseDriver;
+import com.clickhouse.jdbc.Driver;
 import liquibase.database.AbstractJdbcDatabase;
 import liquibase.database.DatabaseConnection;
+import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.DatabaseException;
+import lombok.SneakyThrows;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ClickHouseDatabase extends AbstractJdbcDatabase {
 
   private static final String DATABASE_NAME = "ClickHouse";
   private static final int DEFAULT_PORT = 8123;
-  private static final String DRIVER_CLASS_NAME = ClickHouseDriver.class.getName();
+  private static final String DRIVER_CLASS_NAME = Driver.class.getName();
   public static final String CURRENT_DATE_TIME_FUNCTION =
       "toDateTime64('"
           + new SimpleDateFormat("yyyy.MM.dd HH:mm:ss.SSS").format(new Date())
@@ -95,5 +97,11 @@ public class ClickHouseDatabase extends AbstractJdbcDatabase {
   @Override
   public boolean supportsDDLInTransaction() {
     return false;
+  }
+
+  @Override
+  @SneakyThrows
+  public String getDefaultCatalogName() {
+    return ((JdbcConnection)getConnection()).getUnderlyingConnection().getSchema();
   }
 }

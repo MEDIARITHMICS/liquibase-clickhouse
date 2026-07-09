@@ -19,6 +19,7 @@
  */
 package liquibase.ext.clickhouse.sqlgenerator;
 
+import liquibase.ChecksumVersion;
 import liquibase.ext.clickhouse.database.ClickHouseDatabase;
 import liquibase.ext.clickhouse.params.ClusterConfig;
 import liquibase.ext.clickhouse.params.ParamsLoader;
@@ -57,7 +58,7 @@ public class UpdateChangeSetChecksumClickHouse extends UpdateChangeSetChecksumGe
                 + "UPDATE MD5SUM = '%s' WHERE ID = '%s' AND AUTHOR = '%s' AND FILENAME = '%s' SETTINGS mutations_sync = 1",
             database.getDefaultSchemaName(),
             database.getDatabaseChangeLogTableName(),
-            changeSet.generateCheckSum().toString(),
+            changeSet.generateCheckSum(ChecksumVersion.V9).toString(),
             changeSet.getId(),
             changeSet.getAuthor(),
             changeSet.getFilePath());

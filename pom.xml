@@ -3,93 +3,49 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.mediarithmics</groupId>
-    <artifactId>liquibase-clickhouse</artifactId>
-    <version>0.7.3-SNAPSHOT</version>
+    <groupId>io.github.tridog</groupId>
+    <artifactId>liquibase-clickhouse-fork-4.30</artifactId>
+    <version>0.7.3-2</version>
     <packaging>jar</packaging>
-    <inceptionYear>2020</inceptionYear>
 
     <name>Liquibase extension for ClickHouse</name>
     <description>A Liquibase extension for the ClickHouse database.</description>
-    <url>https://github.com/mediarithmics/liquibase-clickhouse</url>
-
-    <organization>
-        <name>Mediarithmics</name>
-        <url>https://www.mediarithmics.com</url>
-    </organization>
-
-    <developers>
-        <developer>
-            <id>pdalpra@mediarithmics.com</id>
-            <name>Pierre Dal-Pra</name>
-            <organization>Mediarithmics</organization>
-        </developer>
-        <developer>
-            <id>skireev@mediarithmics.com</id>
-            <name>Sergei Kireev</name>
-            <organization>mediarithmics</organization>
-        </developer>
-        <developer>
-            <id>iepimakhov@mediarithmics.com</id>
-            <name>Igor Epimakhov</name>
-            <organization>mediarithmics</organization>
-        </developer>
-    </developers>
-
-    <scm>
-        <connection>scm:git:git:@github.com:mediarithmics/liquibase-clickhouse.git</connection>
-        <developerConnection>scm:git:git:@github.com:mediarithmics/liquibase-clickhouse.git</developerConnection>
-        <url>https://github.com/mediarithmics/liquibase-clickhouse</url>
-        <tag>HEAD</tag>
-    </scm>
-
-    <licenses>
-        <license>
-            <name>Apache 2</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
+    <url>https://github.com/tridog/liquibase-clickhouse-fork-4.30</url>
 
     <properties>
         <encoding>UTF-8</encoding>
         <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <clickhouse-jdbc.version>0.3.2</clickhouse-jdbc.version>
-        <liquibase.version>4.15.0</liquibase.version>
+        <clickhouse-jdbc.version>0.9.2</clickhouse-jdbc.version>
+        <liquibase.version>4.30.0</liquibase.version>
         <junit.version>5.4.0</junit.version>
-        <test-containers.version>1.17.3</test-containers.version>
+        <test-containers.version>2.0.5</test-containers.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
-        <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
-        <license-maven-plugin.version>2.0.0</license-maven-plugin.version>
-        <maven-shade-plugin.version>3.2.0</maven-shade-plugin.version>
-        <fmt-maven-plugin.version>2.9.1</fmt-maven-plugin.version>
-        <impsort-maven-plugin.version>1.4.1</impsort-maven-plugin.version>
-        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
-        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <snakeyaml.version>1.28</snakeyaml.version>
+        <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
+        <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
+        <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+        <snakeyaml.version>2.5</snakeyaml.version>
         <typesafe-config.version>1.4.1</typesafe-config.version>
     </properties>
 
     <dependencies>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.42</version>
+        </dependency>
+        <dependency>
             <groupId>com.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
             <version>${clickhouse-jdbc.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.clickhouse</groupId>
+                    <artifactId>clickhouse-grpc-client</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
@@ -105,13 +61,13 @@
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>clickhouse</artifactId>
+            <artifactId>testcontainers-clickhouse</artifactId>
             <version>${test-containers.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <artifactId>testcontainers-junit-jupiter</artifactId>
             <version>${test-containers.version}</version>
             <scope>test</scope>
         </dependency>
@@ -124,6 +80,11 @@
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
             <version>${typesafe-config.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.lz4</groupId>
+            <artifactId>lz4-java</artifactId>
+            <version>1.8.0</version>
         </dependency>
     </dependencies>
 
@@ -143,65 +104,10 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>${maven-gpg-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <artifactId>maven-release-plugin</artifactId>
                 <configuration>
                     <tagNameFormat>@{project.version}</tagNameFormat>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>${license-maven-plugin.version}</version>
-                <configuration>
-                    <licenseName>apache_v2</licenseName>
-                    <licenseFile>LICENSE</licenseFile>
-                    <canUpdateCopyright>true</canUpdateCopyright>
-                    <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
-                    <includes>
-                        <include>**/*.java</include>
-                    </includes>
-                    <roots>
-                        <root>src/main/java</root>
-                        <root>src/test</root>
-                    </roots>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>update-file-header</goal>
-                            <goal>update-project-license</goal>
-                            <goal>add-third-party</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
@@ -244,23 +150,10 @@
                                     <shadedPattern>shaded.liquibase.ru.</shadedPattern>
                                 </relocation>
                             </relocations>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            </transformers>
                         </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.coveo</groupId>
-                <artifactId>fmt-maven-plugin</artifactId>
-                <version>${fmt-maven-plugin.version}</version>
-                <configuration>
-                    <skipSortingImports>true</skipSortingImports>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>format</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -269,20 +162,30 @@
                 <version>${maven-surefire-plugin.version}</version>
             </plugin>
             <plugin>
-                <groupId>net.revelc.code</groupId>
-                <artifactId>impsort-maven-plugin</artifactId>
-                <version>${impsort-maven-plugin.version}</version>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.9.0</version>
+                <extensions>true</extensions>
                 <configuration>
-                    <removeUnused>true</removeUnused>
-                    <groups>java.,javax.,liquibase.ext.clickhouse.</groups>
-                    <staticGroups>java,*</staticGroups>
+                    <publishingServerId>central</publishingServerId>
+                    <autoPublish>false</autoPublish>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.2.7</version>
                 <executions>
                     <execution>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>sort</goal>
-                        </goals>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals><goal>sign</goal></goals>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

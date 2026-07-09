@@ -19,33 +19,37 @@
  */
 package liquibase;
 
-import java.sql.Connection;
-
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import liquibase.resource.ResourceAccessor;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.containers.ClickHouseContainer;
+import org.testcontainers.clickhouse.ClickHouseContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.shaded.org.apache.commons.io.output.NullWriter;
+import org.testcontainers.utility.DockerImageName;
+
+import java.io.StringWriter;
+import java.sql.Connection;
 
 @Testcontainers
 public class ClickHouseTest {
 
+  private static final DockerImageName clickhouseImage = DockerImageName.parse("clickhouse/clickhouse-server");
+
   @Container
-  private static ClickHouseContainer clickHouseContainer =
-      new ClickHouseContainer("clickhouse/clickhouse-server:22.3.8.39");
+  private static final ClickHouseContainer clickHouseContainer = new ClickHouseContainer(clickhouseImage)
+      .withUsername("test-clickhouse-username")
+      .withPassword("test-clickhouse-password");
 
   @Test
-  void canInitializeLiquibaseSchema() {
+  void canInitializeLiquibaseSchema() throws Exception {
     runLiquibase("empty-changelog.xml", (liquibase, database) -> liquibase.update(""));
   }
 
   @Test
-  void canExecuteChangelog() {
+  void canExecuteChangelog() throws Exception {
     runLiquibase(
         "changelog.xml",
         (liquibase, database) -> {
@@ -55,7 +59,7 @@ public class ClickHouseTest {
   }
 
   @Test
-  void canRollbackChangelog() {
+  void canRollbackChangelog() throws Exception {
     runLiquibase(
         "changelog.xml",
         (liquibase, database) -> {
@@ -65,7 +69,7 @@ public class ClickHouseTest {
   }
 
   @Test
-  void canTagDatabase() {
+  void canTagDatabase() throws Exception {
     runLiquibase(
         "changelog.xml",
         (liquibase, database) -> {
@@ -75,50 +79,47 @@ public class ClickHouseTest {
   }
 
   @Test
-  void canValidate() {
+  void canValidate() throws Exception {
     runLiquibase("changelog.xml", (liquibase, database) -> liquibase.validate());
   }
 
   @Test
-  void canListLocks() {
+  void canListLocks() throws Exception {
     runLiquibase("changelog.xml", (liquibase, database) -> liquibase.listLocks());
   }
 
   @Test
-  void canSyncChangelog() {
+  void canSyncChangelog() throws Exception {
     runLiquibase("changelog.xml", (liquibase, database) -> liquibase.changeLogSync(""));
   }
 
   @Test
-  void canForceReleaseLocks() {
+  void canForceReleaseLocks() throws Exception {
     runLiquibase("changelog.xml", (liquibase, database) -> liquibase.forceReleaseLocks());
   }
 
   @Test
-  void canReportStatus() {
+  void canReportStatus() throws Exception {
     runLiquibase(
         "changelog.xml",
-        (liquibase, database) -> liquibase.reportStatus(true, "", new NullWriter()));
+        (liquibase, database) -> liquibase.reportStatus(true, "", new StringWriter()));
   }
 
   @Test
-  void canMarkChangeSetRan() {
+  void canMarkChangeSetRan() throws Exception {
     runLiquibase("changelog.xml", (liquibase, database) -> liquibase.markNextChangeSetRan(""));
   }
 
-  private void runLiquibase(
-      String changelog, ThrowingBiConsumer<Liquibase, Database> liquibaseAction) {
+  private void runLiquibase(String changelog, ThrowingBiConsumer<Liquibase, Database> liquibaseAction) throws Exception {
     DatabaseFactory dbFactory = DatabaseFactory.getInstance();
     ResourceAccessor resourceAccessor = new ClassLoaderResourceAccessor();
 
-    try {
-      Connection connection = clickHouseContainer.createConnection("");
-      JdbcConnection jdbcConnection = new JdbcConnection(connection);
-      Database database = dbFactory.findCorrectDatabaseImplementation(jdbcConnection);
-      Liquibase liquibase = new Liquibase(changelog, resourceAccessor, database);
+    Connection connection = clickHouseContainer.createConnection("");
+    JdbcConnection jdbcConnection = new JdbcConnection(connection);
+    Database database = dbFactory.findCorrectDatabaseImplementation(jdbcConnection);
+
+    try(Liquibase liquibase = new Liquibase(changelog, resourceAccessor, database)) {
       liquibaseAction.accept(liquibase, database);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
     }
   }
 
