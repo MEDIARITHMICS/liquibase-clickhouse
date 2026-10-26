@@ -2,7 +2,7 @@
  * #%L
  * Liquibase extension for Clickhouse
  * %%
- * Copyright (C) 2020 - 2022 Mediarithmics
+ * Copyright (C) 2020 - 2023 Mediarithmics
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@
  */
 package liquibase.ext.clickhouse.sqlgenerator;
 
+import java.util.UUID;
+
 import liquibase.ext.clickhouse.database.ClickHouseDatabase;
 import liquibase.ext.clickhouse.params.ClusterConfig;
 import liquibase.ext.clickhouse.params.ParamsLoader;
@@ -30,6 +32,13 @@ import liquibase.sqlgenerator.core.LockDatabaseChangeLogGenerator;
 import liquibase.statement.core.LockDatabaseChangeLogStatement;
 
 public class LockDatabaseChangeLogClickHouse extends LockDatabaseChangeLogGenerator {
+
+  // Unique per process: ClickHouse drivers do not report a reliable update count for mutations,
+  // so the lock service checks LOCKEDBY to know whether it got the lock.
+  public static final String LOCKED_BY =
+      String.format(
+          "%s %s (%s) %s",
+          hostname, hostDescription, hostaddress, UUID.randomUUID().toString().substring(0, 8));
 
   @Override
   public int getPriority() {
@@ -48,7 +57,6 @@ public class LockDatabaseChangeLogClickHouse extends LockDatabaseChangeLogGenera
       SqlGeneratorChain sqlGeneratorChain) {
     ClusterConfig properties = ParamsLoader.getLiquibaseClickhouseProperties();
 
-    String host = String.format("%s %s (%s)", hostname, hostDescription, hostaddress);
     String lockQuery =
         String.format(
             "ALTER TABLE `%s`.%s "
@@ -56,7 +64,7 @@ public class LockDatabaseChangeLogClickHouse extends LockDatabaseChangeLogGenera
                 + "UPDATE LOCKED = 1,LOCKEDBY = '%s',LOCKGRANTED = %s WHERE ID = 1 AND LOCKED = 0 SETTINGS mutations_sync = 1",
             database.getDefaultSchemaName(),
             database.getDatabaseChangeLogLockTableName(),
-            host,
+            LOCKED_BY,
             ClickHouseDatabase.CURRENT_DATE_TIME_FUNCTION);
 
     return SqlGeneratorUtil.generateSql(database, lockQuery);

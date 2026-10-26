@@ -2,7 +2,7 @@
  * #%L
  * Liquibase extension for Clickhouse
  * %%
- * Copyright (C) 2020 - 2022 Mediarithmics
+ * Copyright (C) 2020 - 2023 Mediarithmics
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,17 +20,22 @@
 package liquibase.ext.clickhouse.lockservice;
 
 import liquibase.ext.clickhouse.database.ClickHouseDatabase;
+import liquibase.ext.clickhouse.sqlgenerator.LockDatabaseChangeLogClickHouse;
 
 import liquibase.Scope;
 import liquibase.database.Database;
 import liquibase.exception.DatabaseException;
 import liquibase.exception.LiquibaseException;
+import liquibase.exception.LockException;
 import liquibase.exception.UnexpectedLiquibaseException;
 import liquibase.executor.Executor;
 import liquibase.executor.ExecutorService;
 import liquibase.lockservice.StandardLockService;
 import liquibase.logging.Logger;
+import liquibase.statement.core.LockDatabaseChangeLogStatement;
 import liquibase.statement.core.RawSqlStatement;
+import liquibase.statement.core.SelectFromDatabaseChangeLogLockStatement;
+import liquibase.statement.core.UnlockDatabaseChangeLogStatement;
 
 public class ClickHouseLockService extends StandardLockService {
 
@@ -65,6 +70,84 @@ public class ClickHouseLockService extends StandardLockService {
       }
     }
     return isLockTableInitialized;
+  }
+
+  // StandardLockService relies on the update count of the lock/unlock statements, but ClickHouse
+  // drivers do not report one for ALTER ... UPDATE (com.clickhouse returns 0). Read the lock row
+  // back instead.
+  @Override
+  public boolean acquireLock() throws LockException {
+    if (hasChangeLogLock) {
+      return true;
+    }
+
+    Executor executor = getExecutor();
+    try {
+      database.rollback();
+      init();
+
+      if (isLocked(executor)) {
+        return false;
+      }
+
+      executor.comment("Lock Database");
+      executor.update(new LockDatabaseChangeLogStatement());
+      String lockedBy =
+          executor.queryForObject(
+              new SelectFromDatabaseChangeLogLockStatement("LOCKEDBY"), String.class);
+      if (!LockDatabaseChangeLogClickHouse.LOCKED_BY.equals(lockedBy)) {
+        // another process was faster
+        return false;
+      }
+      database.commit();
+      getLogger().info("Successfully acquired change log lock");
+
+      hasChangeLogLock = true;
+      database.setCanCacheLiquibaseTableInfo(true);
+      return true;
+    } catch (Exception e) {
+      throw new LockException(e);
+    } finally {
+      try {
+        database.rollback();
+      } catch (DatabaseException e) {
+        // nothing to roll back
+      }
+    }
+  }
+
+  @Override
+  public void releaseLock() throws LockException {
+    Executor executor = getExecutor();
+    try {
+      if (hasDatabaseChangeLogLockTable()) {
+        executor.comment("Release Database Lock");
+        database.rollback();
+        executor.update(new UnlockDatabaseChangeLogStatement());
+        if (isLocked(executor)) {
+          throw new LockException("Did not update change log lock correctly");
+        }
+        database.commit();
+      }
+    } catch (Exception e) {
+      throw new LockException(e);
+    } finally {
+      try {
+        hasChangeLogLock = false;
+        database.setCanCacheLiquibaseTableInfo(false);
+        getLogger().info("Successfully released change log lock");
+        database.rollback();
+      } catch (DatabaseException e) {
+        // nothing to roll back
+      }
+    }
+  }
+
+  private boolean isLocked(Executor executor) throws DatabaseException {
+    Boolean locked =
+        executor.queryForObject(
+            new SelectFromDatabaseChangeLogLockStatement("LOCKED"), Boolean.class);
+    return Boolean.TRUE.equals(locked);
   }
 
   @Override

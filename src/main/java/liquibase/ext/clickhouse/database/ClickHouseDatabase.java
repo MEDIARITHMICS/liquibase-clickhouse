@@ -19,12 +19,14 @@
  */
 package liquibase.ext.clickhouse.database;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.clickhouse.jdbc.ClickHouseDriver;
 import liquibase.database.AbstractJdbcDatabase;
 import liquibase.database.DatabaseConnection;
+import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.DatabaseException;
 
 public class ClickHouseDatabase extends AbstractJdbcDatabase {
@@ -55,6 +57,20 @@ public class ClickHouseDatabase extends AbstractJdbcDatabase {
   @Override
   public boolean isCorrectDatabaseImplementation(DatabaseConnection conn) throws DatabaseException {
     return DATABASE_NAME.equals(conn.getDatabaseProductName());
+  }
+
+  // com.clickhouse driver exposes the current database as the JDBC schema, not the catalog
+  @Override
+  protected String getConnectionCatalogName() throws DatabaseException {
+    String catalog = super.getConnectionCatalogName();
+    if (catalog == null && getConnection() instanceof JdbcConnection) {
+      try {
+        return ((JdbcConnection) getConnection()).getUnderlyingConnection().getSchema();
+      } catch (SQLException e) {
+        throw new DatabaseException(e);
+      }
+    }
+    return catalog;
   }
 
   @Override
